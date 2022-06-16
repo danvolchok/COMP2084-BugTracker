@@ -10,99 +10,90 @@ using COMP2084_BugTracker.Models;
 
 namespace COMP2084_BugTracker.Controllers
 {
-    public class ProjectsController : Controller
+    public class BugsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ProjectsController(ApplicationDbContext context)
+        public BugsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Projects
+        // GET: Bugs
         public async Task<IActionResult> Index()
         {
-              return _context.Project != null ? 
-                          View(await _context.Project.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Project'  is null.");
+            var applicationDbContext = _context.Bug.Include(b => b.Project);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Projects/Details/5
+        // GET: Bugs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Project == null)
+            if (id == null || _context.Bug == null)
             {
                 return NotFound();
             }
 
-            var project = await _context.Project
+            var bug = await _context.Bug
+                .Include(b => b.Project)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (project == null)
+            if (bug == null)
             {
                 return NotFound();
             }
 
-            var bugs = _context.Bug.Where(m => m.ProjectId == id).OrderBy(bug => bug.CreatedDate);
-
-            var viewModel = new ProjectViewModel()
-            {
-                Name = project.Name,
-                Id = project.Id,
-                Version = project.Version,
-                Description = project.Description,
-                CreatedDate = project.CreatedDate,
-                Bugs = bugs.ToList(),
-            };
-
-            return View(viewModel);
+            return View(bug);
         }
 
-        // GET: Projects/Create
+        // GET: Bugs/Create
         public IActionResult Create()
         {
+            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Description");
             return View();
         }
 
-        // POST: Projects/Create
+        // POST: Bugs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Version,Description,CreatedDate")] Project project)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Priority,Status,CreatedDate,ProjectId")] Bug bug)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(project);
+                _context.Add(bug);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(project);
+            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Description", bug.ProjectId);
+            return View(bug);
         }
 
-        // GET: Projects/Edit/5
+        // GET: Bugs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Project == null)
+            if (id == null || _context.Bug == null)
             {
                 return NotFound();
             }
 
-            var project = await _context.Project.FindAsync(id);
-            if (project == null)
+            var bug = await _context.Bug.FindAsync(id);
+            if (bug == null)
             {
                 return NotFound();
             }
-            return View(project);
+            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Description", bug.ProjectId);
+            return View(bug);
         }
 
-        // POST: Projects/Edit/5
+        // POST: Bugs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Version,Description,CreatedDate")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Priority,Status,CreatedDate,ProjectId")] Bug bug)
         {
-            if (id != project.Id)
+            if (id != bug.Id)
             {
                 return NotFound();
             }
@@ -111,12 +102,12 @@ namespace COMP2084_BugTracker.Controllers
             {
                 try
                 {
-                    _context.Update(project);
+                    _context.Update(bug);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProjectExists(project.Id))
+                    if (!BugExists(bug.Id))
                     {
                         return NotFound();
                     }
@@ -127,60 +118,51 @@ namespace COMP2084_BugTracker.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(project);
+            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Description", bug.ProjectId);
+            return View(bug);
         }
 
-        // GET: Projects/Delete/5
+        // GET: Bugs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Project == null)
+            if (id == null || _context.Bug == null)
             {
                 return NotFound();
             }
 
-            var project = await _context.Project
+            var bug = await _context.Bug
+                .Include(b => b.Project)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (project == null)
+            if (bug == null)
             {
                 return NotFound();
             }
 
-            return View(project);
+            return View(bug);
         }
 
-        // POST: Projects/Delete/5
+        // POST: Bugs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Project == null)
+            if (_context.Bug == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Project'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Bug'  is null.");
             }
-            var project = await _context.Project.FindAsync(id);
-            if (project != null)
+            var bug = await _context.Bug.FindAsync(id);
+            if (bug != null)
             {
-                _context.Project.Remove(project);
+                _context.Bug.Remove(bug);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProjectExists(int id)
+        private bool BugExists(int id)
         {
-          return (_context.Project?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Bug?.Any(e => e.Id == id)).GetValueOrDefault();
         }
-    }
-
-    public class ProjectViewModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public float Version { get; set; }
-        public string Description { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public ICollection<Bug>? Bugs { get; set; }
-
     }
 }

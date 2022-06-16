@@ -11,5 +11,6 @@ namespace COMP2084_BugTracker.Data
         {
         }
         public DbSet<COMP2084_BugTracker.Models.Project>? Project { get; set; }
+        public DbSet<COMP2084_BugTracker.Models.Bug>? Bug { get; set; }
     }
 }
