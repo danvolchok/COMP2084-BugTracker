@@ -14,7 +14,8 @@
       "secretStore": "AzureKeyVault",
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/comp2084dan/databases/COMP2084-BugTracker",
       "type": "mssql.azure",
-      "connectionId": "ConnectionStrings:BugTrackerDB"
+      "connectionId": "ConnectionStrings:BugTrackerDB",
+      "dynamicId": null
     }
   }
 }
