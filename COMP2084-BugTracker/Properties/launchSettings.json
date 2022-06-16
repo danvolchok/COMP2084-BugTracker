@@ -1,0 +1,32 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:27687",
+      "sslPort": 44340
+    }
+  },
+  "profiles": {
+    "COMP2084_BugTracker": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:7123;http://localhost:5123",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://comp2084bugtrackervault.vault.azure.net/",
+        "AZURE_USERNAME": "200389907@student.georgianc.on.ca"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://comp2084bugtrackervault.vault.azure.net/",
+        "AZURE_USERNAME": "200389907@student.georgianc.on.ca"
+      }
+    }
+  }
+}
