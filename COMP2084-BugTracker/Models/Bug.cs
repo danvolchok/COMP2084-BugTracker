@@ -14,7 +14,11 @@ namespace COMP2084_BugTracker.Models
         public string Status { get; set; }
         public DateTime CreatedDate { get; set; }
 
+
+        // a foreign key pointing to primary key in Project
         [ForeignKey("Project")]
+
+
         public int? ProjectId { get; set; }
         public Project? Project { get; set; } 
     } 

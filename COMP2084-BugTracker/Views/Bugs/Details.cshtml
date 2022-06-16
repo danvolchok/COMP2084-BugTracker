@@ -43,8 +43,14 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Project)
         </dt>
+
+        <!-- creating a link back to the Project the Bug is assigned to -->
+
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Project.Description)
+            @if (Model.Project != null)
+            {
+                @Html.ActionLink(Model.Project.Name, "Details", "Projects", new { id = Model.ProjectId})
+            }
         </dd>
     </dl>
 </div>

@@ -42,7 +42,11 @@ namespace COMP2084_BugTracker.Controllers
                 return NotFound();
             }
 
+            // ordering Bugs assigned to selected Project by CreatedDate
+
             var bugs = _context.Bug.Where(m => m.ProjectId == id).OrderBy(bug => bug.CreatedDate);
+            
+            // a view model for the Details View to pass the Project variables and list of Bugs through
 
             var viewModel = new ProjectViewModel()
             {

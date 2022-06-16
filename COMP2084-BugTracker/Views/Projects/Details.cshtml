@@ -1,4 +1,4 @@
-﻿@model COMP2084_BugTracker.Models.Project
+﻿@model COMP2084_BugTracker.Controllers.ProjectViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -35,6 +35,60 @@
             @Html.DisplayFor(model => model.CreatedDate)
         </dd>
     </dl>
+
+    <!-- a view for any and all Bugs attached to a Project -->
+
+    @if (Model.Bugs.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Priority
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Created Date
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var bug in Model.Bugs)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => bug.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => bug.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => bug.Priority)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => bug.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => bug.CreatedDate)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", "Bugs", new { id = bug.Id})
+                            @Html.ActionLink("Details", "Details", "Bugs", new { id = bug.Id})
+                            @Html.ActionLink("Delete", "Delete", "Bugs", new { id = bug.Id})
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
