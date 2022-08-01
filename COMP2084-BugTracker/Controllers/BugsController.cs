@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using COMP2084_BugTracker.Data;
 using COMP2084_BugTracker.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace COMP2084_BugTracker.Controllers
 {
+    [Authorize]
     public class BugsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,6 +22,7 @@ namespace COMP2084_BugTracker.Controllers
         }
 
         // GET: Bugs
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Bug.Include(b => b.Project);
@@ -27,6 +30,7 @@ namespace COMP2084_BugTracker.Controllers
         }
 
         // GET: Bugs/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Bug == null)

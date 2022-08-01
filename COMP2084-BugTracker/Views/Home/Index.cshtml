@@ -1,4 +1,8 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -8,4 +12,12 @@
         Issues can arise and pile up like flies. <br />
         When left un-smacked, they'll set the whole team off track. <br />
         Line 'em up right where you want 'em with <b>The Bug Tracker</b>, <i>"The End of an Error"</i>.</p>
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <p>The user @User.Identity?.Name is logged in.</p>
+    } else
+    {
+        <p>You are not logged in.</p>
+    }
 </div>

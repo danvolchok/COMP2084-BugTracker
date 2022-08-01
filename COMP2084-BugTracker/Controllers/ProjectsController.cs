@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using COMP2084_BugTracker.Data;
 using COMP2084_BugTracker.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace COMP2084_BugTracker.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,6 +22,7 @@ namespace COMP2084_BugTracker.Controllers
         }
 
         // GET: Projects
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
               return _context.Project != null ? 
@@ -28,6 +31,7 @@ namespace COMP2084_BugTracker.Controllers
         }
 
         // GET: Projects/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Project == null)
