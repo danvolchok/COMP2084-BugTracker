@@ -48,7 +48,7 @@ namespace COMP2084_BugTracker.Controllers
         // GET: Bugs/Create
         public IActionResult Create()
         {
-            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Description");
+            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Name");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace COMP2084_BugTracker.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Description", bug.ProjectId);
+            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Name", bug.ProjectId);
             return View(bug);
         }
 
@@ -82,7 +82,7 @@ namespace COMP2084_BugTracker.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Description", bug.ProjectId);
+            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Name", bug.ProjectId);
             return View(bug);
         }
 
@@ -118,7 +118,7 @@ namespace COMP2084_BugTracker.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Description", bug.ProjectId);
+            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Name", bug.ProjectId);
             return View(bug);
         }
 
